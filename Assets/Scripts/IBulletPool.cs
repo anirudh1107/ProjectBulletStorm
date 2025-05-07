@@ -3,13 +3,10 @@ using UnityEngine.Pool;
 
 public abstract class IBulletPool 
 {
-    public int initialPoolSize = 1000;
-    public int maxPoolSize = 10000;
-
-    private ObjectPool<GameObject> bulletPool;
+    protected ObjectPool<GameObject> bulletPool;
     
 
-    public virtual void InitializePool(GameObject bulletPrefab)
+    public virtual void InitializePool(GameObject bulletPrefab, int initialPoolSize, int maxPoolSize)
     {
         bulletPool = new ObjectPool<GameObject>(
             () => { return Object.Instantiate(bulletPrefab, Vector3.zero, Quaternion.identity); },

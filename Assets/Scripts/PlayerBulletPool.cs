@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class PlayerBulletPool : IBulletPool
 {
-    
-    public override void InitializePool(GameObject bulletPrefab)
+    private int initialPoolSize = 1000;
+    private int maxPoolSize = 10000;
+    public override void InitializePool(GameObject bulletPrefab, int initialPoolSize, int maxPoolSize)
     {
-        base.InitializePool(bulletPrefab);
+        base.InitializePool(bulletPrefab, initialPoolSize, maxPoolSize);
     }
 
     public override GameObject GetBullet(Vector3 spawnPosition, Quaternion spawnRotation)

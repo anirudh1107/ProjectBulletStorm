@@ -17,12 +17,14 @@ public class PlayerGun : MonoBehaviour
 
     public static Action onShoot; 
     public bool isShooting = false;
+    private int initialPoolSize = 1000;
+    private int maxPoolSize = 10000;
 
     private void Awake()
     {
         if (bulletPool == null) {
             bulletPool = new PlayerBulletPool();
-            bulletPool.InitializePool(_bulletPrefab); // Should Also Initialize once
+            bulletPool.InitializePool(_bulletPrefab, initialPoolSize, maxPoolSize); // Should Also Initialize once
         }
     }
 
