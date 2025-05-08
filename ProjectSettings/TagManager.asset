@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Props
   - Bullet
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - Player
   - Props
   - PlayerBullet
-  - 
-  - 
+  - Enemy
+  - EnemyBullet
   - 
   - 
   - 
@@ -46,8 +47,14 @@ TagManager:
   - name: Prop
     uniqueID: 1346667593
     locked: 0
+  - name: EnemyBullet
+    uniqueID: 190256387
+    locked: 0
   - name: PlayerBullet
     uniqueID: 2481309453
+    locked: 0
+  - name: Enemy
+    uniqueID: 2446272787
     locked: 0
   - name: Player
     uniqueID: 2640432873

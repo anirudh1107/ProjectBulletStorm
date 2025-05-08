@@ -54,7 +54,7 @@ public class Bullet : MonoBehaviour
     {      
         rb.linearVelocity = Vector2.zero;
         Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
-        PlayerGun.bulletPool.ReturnBullet(this.gameObject);
+        PlayerGun.bulletPool.ReturnPlayerBullet(this.gameObject);
     }
 
 

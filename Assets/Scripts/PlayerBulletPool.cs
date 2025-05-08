@@ -1,26 +1,57 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
-public class PlayerBulletPool : IBulletPool
+public class PlayerBulletPool
 {
+    protected ObjectPool<GameObject> bulletPool;
     private int initialPoolSize = 1000;
     private int maxPoolSize = 10000;
-    public override void InitializePool(GameObject bulletPrefab, int initialPoolSize, int maxPoolSize)
+
+    public void InitializePool(GameObject bulletPrefab)
     {
-        base.InitializePool(bulletPrefab, initialPoolSize, maxPoolSize);
+        bulletPool = new ObjectPool<GameObject>(
+            () => { return Object.Instantiate(bulletPrefab, Vector3.zero, Quaternion.identity); },
+            x => x.SetActive(true),
+            y => y.SetActive(false),
+            z => Object.Destroy(z),
+            false,
+            initialPoolSize,
+            maxPoolSize
+        );
     }
 
-    public override GameObject GetBullet(Vector3 spawnPosition, Quaternion spawnRotation)
+    private GameObject GetBullet(Vector3 spawnPosition, Quaternion spawnRotation)
     {
-        GameObject bullet = base.GetBullet(spawnPosition, spawnRotation);
+        if (bulletPool == null)
+        {
+            Debug.LogError("Bullet pool is not initialized");
+        }
+
+        return bulletPool.Get();
+    }
+
+    private void ReturnBullet(GameObject bullet)
+    {
+        if (bulletPool == null)
+        {
+            Debug.LogError("Bullet pool is not initialized and bullet is being destroyed." + bullet.ToString());
+        }
+
+        bulletPool.Release(bullet);
+    }
+
+    public GameObject GetPlayerBullet(Vector3 spawnPosition, Quaternion spawnRotation)
+    {
+        GameObject bullet = GetBullet(spawnPosition, spawnRotation);
         bullet.transform.position = spawnPosition;
         bullet.transform.rotation = spawnRotation;
         return bullet;
     }
 
-    public override void ReturnBullet(GameObject bullet)
+    public void ReturnPlayerBullet(GameObject bullet)
     {
         bullet.transform.position = Vector3.zero;
         bullet.transform.rotation = Quaternion.identity;
-        base.ReturnBullet(bullet);
+        ReturnBullet(bullet);
     }
 }

@@ -24,7 +24,7 @@ public class PlayerGun : MonoBehaviour
     {
         if (bulletPool == null) {
             bulletPool = new PlayerBulletPool();
-            bulletPool.InitializePool(_bulletPrefab, initialPoolSize, maxPoolSize); // Should Also Initialize once
+            bulletPool.InitializePool(_bulletPrefab); // Should Also Initialize once
         }
     }
 
@@ -61,7 +61,7 @@ public class PlayerGun : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 shootDirection = (mousePosition - transform.position).normalized;
 
-        GameObject bullet = bulletPool.GetBullet(transform.position, Quaternion.identity);
+        GameObject bullet = bulletPool.GetPlayerBullet(transform.position, Quaternion.identity);
         //bullet.transform.position = transform.position;
         //bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Bullet>().Initialize(shootDirection, _bulletSpeed);

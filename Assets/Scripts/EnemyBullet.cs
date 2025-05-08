@@ -50,11 +50,23 @@ public class EnemyBullet : MonoBehaviour
         ReturnBullet();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // Handle collision with player
+            // For example, you can apply damage to the player here
+            Debug.Log("Hit Player");
+        }
+        ReturnBullet();
+
+    }
+
     private void ReturnBullet()
     {
         rb.linearVelocity = Vector2.zero;
         Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
-        PlayerGun.bulletPool.ReturnBullet(this.gameObject);
+        EnemyGun.bulletPool.ReturnBullet(this.gameObject);
     }
 
 }

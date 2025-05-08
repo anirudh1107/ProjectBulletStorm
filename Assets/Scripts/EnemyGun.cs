@@ -7,13 +7,13 @@ public class EnemyGun : MonoBehaviour
     [SerializeField]
     private GameObject _bulletPrefab;
     [SerializeField]
-    private float _bulletCoolDown = 0.1f;
-    [SerializeField]
     private float _bulletSpeed = 20f;
+    [SerializeField]
+    private float patternInterval = 0.2f;
 
-    public static PlayerBulletPool bulletPool;
+    public static EnemyBulletPool bulletPool;
 
-    public static Action onShoot;
+    public static Action enemyOnShoot;
     public bool isShooting = false;
     private int initialPoolSize = 1000;
     private int maxPoolSize = 10000;
@@ -22,57 +22,49 @@ public class EnemyGun : MonoBehaviour
     {
         if (bulletPool == null)
         {
-            bulletPool = new PlayerBulletPool();
+            bulletPool = new EnemyBulletPool();
             bulletPool.InitializePool(_bulletPrefab, initialPoolSize, maxPoolSize); 
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (isShooting)
-        {
-            StartCoroutine(ShootWithCoolDown());
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (Input.GetMouseButton(0))
-        {
-            isShooting = true;
-        }
-        else
-        {
-            isShooting = false;
-        }
-    }
-
-    private void Shoot()
+    private void Shoot(Vector2 shootDirection)
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 shootDirection = (mousePosition - transform.position).normalized;
 
-        GameObject bullet = bulletPool.GetBullet(transform.position, Quaternion.identity);
+        GameObject enemyBullet = bulletPool.GetBullet(transform.position, Quaternion.identity);
         //bullet.transform.position = transform.position;
         //bullet.transform.rotation = Quaternion.identity;
-        bullet.GetComponent<Bullet>().Initialize(shootDirection, _bulletSpeed);
-        onShoot?.Invoke();
+        enemyBullet.GetComponent<EnemyBullet>().Initialize(shootDirection, _bulletSpeed);
+        enemyOnShoot?.Invoke();
     }
 
-    private IEnumerator ShootWithCoolDown()
+    public Vector2[] GenerateDirections(int partitions)
     {
-        while (isShooting)
+        Vector2[] directions = new Vector2[partitions];
+        float angleStep = 360f / partitions;
+
+        for (int i = 0; i < partitions; i++)
         {
-            Shoot();
-            yield return new WaitForSeconds(_bulletCoolDown);
+            float angle = i * angleStep;
+            float radians = angle * Mathf.Deg2Rad; // Convert to radians
+            directions[i] = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
         }
 
+        return directions;
+    }
+
+    private IEnumerator SpawnCircularPatterns(int partition)
+    {
+        Vector2[] shootDirections = GenerateDirections(partition);
+        foreach (var direction in shootDirections)
+        {
+            Shoot(direction);
+            yield return new WaitForSeconds(patternInterval);
+        }
+    }
+
+    public void ShootCircularPattern(int partition)
+    {
+        StartCoroutine(SpawnCircularPatterns(partition));
     }
 }
