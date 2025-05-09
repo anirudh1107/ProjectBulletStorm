@@ -46,6 +46,7 @@ public class Bullet : MonoBehaviour
             // Handle collision with enemy
             // For example, you can apply damage to the enemy here
             Debug.Log("Hit Enemy");
+            collision.gameObject.GetComponent<Enemy>().Hit?.Invoke();
         }
         ReturnBullet();
     }
