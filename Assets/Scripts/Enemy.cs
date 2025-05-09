@@ -1,4 +1,6 @@
 using UnityEngine;
+using MoreMountains.Feel;
+using MoreMountains.Feedbacks;
 
 public class Enemy : MonoBehaviour
 {
@@ -6,6 +8,8 @@ public class Enemy : MonoBehaviour
     private EnemyGun _enemyGun;
     [SerializeField]
     private float _shootInterval = 5f;
+    [SerializeField]
+    private MMF_Player _routineShakeFeedBack;
 
     private float _nextShootTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,8 +24,11 @@ public class Enemy : MonoBehaviour
         _nextShootTime -= Time.deltaTime;
         if (_nextShootTime <= 0f)
         {
+            _routineShakeFeedBack.PlayFeedbacks();
             _enemyGun.ShootCircularPattern(24);
             _nextShootTime = _shootInterval;
         }
     }
+
+    
 }
