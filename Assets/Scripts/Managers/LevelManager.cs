@@ -3,17 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Michsky.MUIP;
 
 public class LevelManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] _icons;
+    [SerializeField]
+    private DialogSo[] _initialDialogs;
+    [SerializeField]
+    private Canvas _dialogCanvas;
+    [SerializeField]
+    private ModalWindowManager _modalWindowManager;
+    [SerializeField]
+    private static int _activeCount = 0;
+
     private List<GameObject> _activeIcons;
     private List<GameObject> _inactiveIcons;
     private int _maxActiveCount = 10;
     private int _maxInactiveCount = 10;
     private int _defaultActiveCount = 3;
     private bool isBlinking;
+    private int _currentDialogIndex = -1;
+    
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,6 +35,9 @@ public class LevelManager : MonoBehaviour
         _inactiveIcons = _icons.ToList();
         isBlinking = false;
         InfectAtIndex(0);
+        Time.timeScale = 0f;
+        _dialogCanvas.gameObject.SetActive(true);
+        DialogTrigger();
         InvokeRepeating("chooseRandomToInfect", 0f, 5f);
         
     }
@@ -30,9 +45,10 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isBlinking && _activeIcons.Count() <= 0)
+        if (!isBlinking && _activeCount <= 0)
         {
-            StartCoroutine(EntryBlink(_icons[0].GetComponent<Enemy>()));
+            Enemy exitTrigger = _icons[0].GetComponent<Enemy>();
+            StartCoroutine(EntryBlink(exitTrigger));
         }
     }
 
@@ -52,7 +68,13 @@ public class LevelManager : MonoBehaviour
         GameObject iconToInfect = _inactiveIcons[index];
         iconToInfect.GetComponent<Enemy>().Infect();
         _activeIcons.Add(iconToInfect);
+        _activeCount++;
         _inactiveIcons.RemoveAt(index);
+    }
+
+    public static void DisInfect()
+    {
+        _activeCount--;
     }
 
     private IEnumerator EntryBlink(Enemy enemy) 
@@ -62,5 +84,26 @@ public class LevelManager : MonoBehaviour
             enemy.TriggerEntryFeedback();
             yield return new WaitForSeconds(2f);
         }
+    }
+
+    public void DialogTrigger()
+    {
+        _currentDialogIndex++;
+        if (_currentDialogIndex >= _initialDialogs.Length)
+        {
+            _dialogCanvas.gameObject.SetActive(false);
+            Time.timeScale = 1f;
+            return;
+        }
+        _modalWindowManager.titleText = _initialDialogs[_currentDialogIndex].Title;
+        _modalWindowManager.descriptionText = _initialDialogs[_currentDialogIndex].DialogText;
+        _modalWindowManager.UpdateUI();
+        if (_currentDialogIndex == 0)
+            _modalWindowManager.OpenWindow();
+    }
+
+    public void CloseDialog()
+    {
+        DialogTrigger();
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using MoreMountains.Feel;
 using MoreMountains.Feedbacks;
 using System;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Enemy : MonoBehaviour
 
     public Action Hit;
 
+    private BoxCollider2D _collider;
     private float _nextShootTime;
     private bool _isInfected = false;
     private float healthPoints = 100f;
@@ -41,6 +43,8 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _nextShootTime = _shootInterval;
+        _collider = GetComponent<BoxCollider2D>();
+        _collider.enabled = false;
     }
 
     // Update is called once per frame
@@ -57,9 +61,8 @@ public class Enemy : MonoBehaviour
         _nextShootTime -= Time.deltaTime;
         if (_nextShootTime <= 0f)
         {
-            _routineShakeFeedBack.PlayFeedbacks();
-            _enemyGun.ShootCircularPattern(24);
             _nextShootTime = _shootInterval;
+            StartCoroutine(ShootEnumerator());
         }
     }
 
@@ -74,7 +77,7 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
-
+        _collider.enabled = true;
         _infectedVisuals.SetActive(true);
         _isInfected = true;
     }
@@ -85,8 +88,9 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
-
+        LevelManager.DisInfect();
         _infectedVisuals.SetActive(false);
+        _collider.enabled = false;
         _isInfected = false;
     }
 
@@ -121,8 +125,13 @@ public class Enemy : MonoBehaviour
         {
             _entryFeedback.PlayFeedbacks();
         }
+    }
 
-
+    private IEnumerator ShootEnumerator()
+    {
+        _routineShakeFeedBack.PlayFeedbacks();
+        yield return new WaitForSeconds(2f);
+        _enemyGun.ShootCircularPattern(24);
     }
 
 }
