@@ -20,6 +20,16 @@ public class PlayerGun : MonoBehaviour
     private int initialPoolSize = 1000;
     private int maxPoolSize = 10000;
 
+    private void OnEnable()
+    {
+        onShoot += StartShooting;
+    }
+
+    private void OnDisable()
+    {
+        onShoot -= StartShooting;
+    }
+
     private void Awake()
     {
         if (bulletPool == null) {
@@ -38,17 +48,17 @@ public class PlayerGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isShooting)
-        {
-            StartCoroutine(ShootWithCoolDown());
-        }
+       
     }
 
     private void FixedUpdate()
     {
         if (Input.GetMouseButton(0))
         {
-            isShooting = true;
+            if (!isShooting)
+            {
+                onShoot?.Invoke();
+            }
         }
         else
         {
@@ -65,7 +75,12 @@ public class PlayerGun : MonoBehaviour
         //bullet.transform.position = transform.position;
         //bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Bullet>().Initialize(shootDirection, _bulletSpeed);
-        onShoot?.Invoke();
+    }
+
+    private void StartShooting()
+    {
+        isShooting = true;
+        StartCoroutine(ShootWithCoolDown());
     }
 
     private IEnumerator ShootWithCoolDown()
