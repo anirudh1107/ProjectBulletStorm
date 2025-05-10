@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour
     private MMF_Player _hitFeedBack;
     [SerializeField]
     private GameObject _infectedVisuals;
+    [SerializeField]
+    private MMF_Player _entryFeedback;
 
     public Action Hit;
 
@@ -113,5 +115,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void TriggerEntryFeedback()
+    {
+        if (_entryFeedback != null)
+        {
+            _entryFeedback.PlayFeedbacks();
+        }
+
 
     }
+
+}

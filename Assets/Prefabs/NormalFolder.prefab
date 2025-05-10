@@ -362,12 +362,12 @@ MonoBehaviour:
         Owner: {fileID: 873103883060957676}
         DebugActive: 0
         TargetShaker: {fileID: 8739169078129850967}
-        Duration: 0.5
+        Duration: 2
         ResetShakerValuesAfterShake: 1
         ResetTargetValuesAfterShake: 1
-        ShakeSpeed: 20
+        ShakeSpeed: 30
         ShakeRange: 0.5
-        ShakeMainDirection: {x: 0, y: 1, z: 0}
+        ShakeMainDirection: {x: 1, y: 0.6, z: 0}
         RandomizeDirection: 0
         ShakeAltDirection: {x: 0, y: 1, z: 0}
         RandomizeDirectionOnPlay: 0
@@ -393,19 +393,10 @@ MonoBehaviour:
             inWeight: 0
             outWeight: 0
           - serializedVersion: 3
-            time: 0.5
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
+            time: 0.7277832
+            value: 0.9952812
+            inSlope: 2
+            outSlope: 2
             tangentMode: 0
             weightedMode: 0
             inWeight: 0
