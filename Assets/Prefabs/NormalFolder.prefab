@@ -404,54 +404,6 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
---- !u!1 &3993240207632650551
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 322718307894044968}
-  - component: {fileID: 4158881121753556912}
-  m_Layer: 0
-  m_Name: EnemyGunInstance
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &322718307894044968
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3993240207632650551}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.33333334, y: 0.5, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5035588986213730344}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4158881121753556912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3993240207632650551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e7a7c7422f4e5e4dafb4e32a5e2be0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletPrefab: {fileID: 892729135335524484, guid: 85b4904273c9ad740a346935847b0e5c, type: 3}
-  _bulletSpeed: 20
-  patternInterval: 0.05
-  isShooting: 0
 --- !u!1 &4188299513721603388
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,7 +897,7 @@ GameObject:
   - component: {fileID: 2171532871591225154}
   - component: {fileID: 8739169078129850967}
   - component: {fileID: 9081102683728091955}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: NormalFolder
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -965,7 +917,6 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 322718307894044968}
   - {fileID: 3409391009904060978}
   - {fileID: 8878119158241400685}
   - {fileID: 1747477724237552147}
@@ -1113,12 +1064,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6d9bed80208cd3448e067311685276a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyGun: {fileID: 4158881121753556912}
-  _shootInterval: 5
+  _enemyGun: {fileID: 0}
+  _shootInterval: 2
   _routineShakeFeedBack: {fileID: 873103883060957676}
   _hitFeedBack: {fileID: 5254368865089060896}
   _infectedVisuals: {fileID: 771847250083897912}
-  _entryFeedback: {fileID: 0}
+  _entryFeedback: {fileID: 7870020843926413221}
 --- !u!114 &8739169078129850967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1489,7 +1440,7 @@ MonoBehaviour:
           ButtonText: 
         Owner: {fileID: 7870020843926413221}
         DebugActive: 0
-        BoundRenderer: {fileID: 0}
+        BoundRenderer: {fileID: 2888743455434430603}
         ExtraBoundRenderers: []
         Mode: 0
         PropertyName: _Tint

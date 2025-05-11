@@ -15,9 +15,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private DialogSo _enterTriggerDialog;
     [SerializeField]
-    private Canvas _dialogCanvas;
+    private  DialogSo _gameOverDialog;
     [SerializeField]
-    private ModalWindowManager _modalWindowManager;
+    private  Canvas _dialogCanvas;
+    [SerializeField]
+    private  ModalWindowManager _modalWindowManager;
     [SerializeField]
     private static int _activeCount = 0;
 
@@ -29,8 +31,21 @@ public class LevelManager : MonoBehaviour
     private bool isBlinking;
     private int _currentDialogIndex = -1;
     private bool _completedInfection = false;
-    
+    public static LevelManager Instance { get; private set; }
 
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,7 +57,7 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 0f;
         _dialogCanvas.gameObject.SetActive(true);
         DialogTrigger();
-        InvokeRepeating("chooseRandomToInfect", 0f, 5f);
+        InvokeRepeating("chooseRandomToInfect", 0f, 3f);
         
     }
 
@@ -124,6 +139,21 @@ public class LevelManager : MonoBehaviour
         _modalWindowManager.UpdateUI();
         _dialogCanvas.gameObject.SetActive(true);
         Time.timeScale = 0f;
+    }
+
+    public  void GameOverDialog()
+    {
+        _modalWindowManager.titleText = _gameOverDialog.Title;
+        _modalWindowManager.descriptionText = _gameOverDialog.DialogText;
+        _modalWindowManager.UpdateUI();
+        _modalWindowManager.onConfirm.AddListener(ResetGame);
+        _dialogCanvas.gameObject.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     public static void LoadNextLevel()

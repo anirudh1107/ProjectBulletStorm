@@ -130,8 +130,8 @@ public class Enemy : MonoBehaviour
     private IEnumerator ShootEnumerator()
     {
         _routineShakeFeedBack.PlayFeedbacks();
-        yield return new WaitForSeconds(2f);
-        _enemyGun.ShootCircularPattern(24);
+        yield return new WaitForSeconds(1f);
+        _enemyGun.ShootCircularPattern(40, this.transform.position);
     }
 
 }

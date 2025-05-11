@@ -43,9 +43,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // Handle collision with enemy
-            // For example, you can apply damage to the enemy here
-            Debug.Log("Hit Player");
+           collision.GetComponent<PlayerHealth>().HitPlayer();
         }
         ReturnBullet();
     }
@@ -54,9 +52,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Handle collision with player
-            // For example, you can apply damage to the player here
-            Debug.Log("Hit Player");
+            
         }
         ReturnBullet();
 

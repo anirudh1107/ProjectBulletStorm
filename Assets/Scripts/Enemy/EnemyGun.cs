@@ -15,23 +15,20 @@ public class EnemyGun : MonoBehaviour
 
     public static Action enemyOnShoot;
     public bool isShooting = false;
-    private int initialPoolSize = 1000;
-    private int maxPoolSize = 10000;
+    private int initialPoolSize = 400;
+    private int maxPoolSize = 800;
 
     private void Awake()
     {
-        if (bulletPool == null)
-        {
-            bulletPool = new EnemyBulletPool();
-            bulletPool.InitializePool(_bulletPrefab, initialPoolSize, maxPoolSize); 
-        }
+        bulletPool = new EnemyBulletPool();
+        bulletPool.InitializePool(_bulletPrefab, initialPoolSize, maxPoolSize); 
     }
 
-    private void Shoot(Vector2 shootDirection)
+    private void Shoot(Vector2 shootDirection, Vector3 enemyPosition)
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        GameObject enemyBullet = bulletPool.GetBullet(transform.position, Quaternion.identity);
+        GameObject enemyBullet = bulletPool.GetBullet(enemyPosition, Quaternion.identity);
         //bullet.transform.position = transform.position;
         //bullet.transform.rotation = Quaternion.identity;
         enemyBullet.GetComponent<EnemyBullet>().Initialize(shootDirection, _bulletSpeed);
@@ -53,18 +50,18 @@ public class EnemyGun : MonoBehaviour
         return directions;
     }
 
-    private IEnumerator SpawnCircularPatterns(int partition)
+    private IEnumerator SpawnCircularPatterns(int partition, Vector3 enemyPosition)
     {
         Vector2[] shootDirections = GenerateDirections(partition);
         foreach (var direction in shootDirections)
         {
-            Shoot(direction);
+            Shoot(direction, enemyPosition);
             yield return new WaitForSeconds(patternInterval);
         }
     }
 
-    public void ShootCircularPattern(int partition)
+    public void ShootCircularPattern(int partition, Vector3 enemyPosition)
     {
-        StartCoroutine(SpawnCircularPatterns(partition));
+        StartCoroutine(SpawnCircularPatterns(partition, enemyPosition));
     }
 }
