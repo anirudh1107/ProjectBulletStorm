@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Michsky.MUIP;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class LevelManager : MonoBehaviour
     private GameObject[] _icons;
     [SerializeField]
     private DialogSo[] _initialDialogs;
+    [SerializeField]
+    private DialogSo _enterTriggerDialog;
     [SerializeField]
     private Canvas _dialogCanvas;
     [SerializeField]
@@ -25,6 +28,7 @@ public class LevelManager : MonoBehaviour
     private int _defaultActiveCount = 3;
     private bool isBlinking;
     private int _currentDialogIndex = -1;
+    private bool _completedInfection = false;
     
 
 
@@ -45,8 +49,9 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isBlinking && _activeCount <= 0)
+        if (_completedInfection && (!isBlinking) && (_activeCount <= 0))
         {
+            ExitTriggerDialog();
             Enemy exitTrigger = _icons[0].GetComponent<Enemy>();
             StartCoroutine(EntryBlink(exitTrigger));
         }
@@ -58,6 +63,7 @@ public class LevelManager : MonoBehaviour
         InfectAtIndex(randomIndex);
         if (_activeIcons.Count() > _defaultActiveCount)
         {
+            _completedInfection = true;
             CancelInvoke("chooseRandomToInfect");
         }
 
@@ -79,6 +85,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator EntryBlink(Enemy enemy) 
     {
+        isBlinking = true;
         while (true)
         {
             enemy.TriggerEntryFeedback();
@@ -105,5 +112,19 @@ public class LevelManager : MonoBehaviour
     public void CloseDialog()
     {
         DialogTrigger();
+    }
+
+    public void ExitTriggerDialog()
+    {
+        _modalWindowManager.titleText = _enterTriggerDialog.Title;
+        _modalWindowManager.descriptionText = _enterTriggerDialog.DialogText;
+        _modalWindowManager.UpdateUI();
+        _dialogCanvas.gameObject.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public static void LoadNextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

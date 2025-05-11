@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public static PlayerMovement Instance { get; private set; } // Singleton instance of PlayerMovement
+    public LayerMask gateLayer;
 
     [SerializeField]
     private float movementSpeedHorizontal = 5f; // Speed of the player movement
@@ -31,6 +32,16 @@ public class PlayerMovement : MonoBehaviour
         // Get input from the user
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            bool isOnGate = Physics2D.OverlapCircle(transform.position, 0.1f, gateLayer);
+            if (isOnGate)
+            {
+                // Call the method to open the gate
+                LevelManager.LoadNextLevel();
+            }
+        }
 
         Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 Direction = MousePos - this.transform.position; // Calculate the direction from the player to the mouse position
