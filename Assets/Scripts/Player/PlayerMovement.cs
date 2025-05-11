@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            bool isOnGate = Physics2D.OverlapCircle(transform.position, 0.1f, gateLayer);
+            bool isOnGate = Physics2D.OverlapCircle(transform.position, 2f, gateLayer);
             if (isOnGate)
             {
                 // Call the method to open the gate

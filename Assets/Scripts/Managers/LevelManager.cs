@@ -53,6 +53,9 @@ public class LevelManager : MonoBehaviour
         {
             ExitTriggerDialog();
             Enemy exitTrigger = _icons[0].GetComponent<Enemy>();
+            BoxCollider2D gateCollider = _icons[0].GetComponent<BoxCollider2D>();
+            gateCollider.enabled = true;
+            gateCollider.isTrigger = true;
             StartCoroutine(EntryBlink(exitTrigger));
         }
     }
