@@ -13,12 +13,14 @@ public class PlayerGun : MonoBehaviour
     [SerializeField]
     private float _bulletSpeed = 20f;
 
-    public static PlayerBulletPool bulletPool;
+    public PlayerBulletPool bulletPool;
 
     public static Action onShoot; 
     public bool isShooting = false;
     private int initialPoolSize = 1000;
     private int maxPoolSize = 10000;
+
+    public static PlayerGun Instance { get; private set; }
 
     private void OnEnable()
     {
@@ -30,19 +32,18 @@ public class PlayerGun : MonoBehaviour
         onShoot -= StartShooting;
     }
 
-    private void Awake()
-    {
-        if (bulletPool == null) {
-            bulletPool = new PlayerBulletPool();
-            bulletPool.InitializePool(_bulletPrefab); // Should Also Initialize once
-        }
-    }
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        if (bulletPool == null)
+        {
+            bulletPool = new PlayerBulletPool();
+            bulletPool.InitializePool(_bulletPrefab); // Should Also Initialize once
+        }
     }
 
     // Update is called once per frame

@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -12,6 +13,10 @@ public class PlayerMovement : MonoBehaviour
     private float movementSpeedVertical = 5f; // Speed of the player movement
 
     private Rigidbody playerRb;
+    private float xMaxLimit = 19f;
+    private float xMinLimit = -2.5f;
+    private float yMaxLimit = 4f;
+    private float yMinLimit = -6.5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -50,8 +55,24 @@ public class PlayerMovement : MonoBehaviour
 
         // Create a new Vector3 for movement
         Vector3 movement = new Vector3(moveHorizontal * movementSpeedHorizontal, moveVertical * movementSpeedVertical,0.0f );
-
         // Move the player using Rigidbody
         this.transform.Translate(movement * Time.deltaTime, Space.World);
+        // Clamp the player's position to the defined limits
+        if (this.transform.position.x > xMaxLimit)
+        {
+            this.transform.position = new Vector3(xMaxLimit, this.transform.position.y, this.transform.position.z);
+        }
+        else if (this.transform.position.x < xMinLimit)
+        {
+            this.transform.position = new Vector3(xMinLimit, this.transform.position.y, this.transform.position.z);
+        }
+        if (this.transform.position.y > yMaxLimit)
+        {
+            this.transform.position = new Vector3(this.transform.position.x, yMaxLimit, this.transform.position.z);
+        }
+        else if (this.transform.position.y < yMinLimit)
+        {
+            this.transform.position = new Vector3(this.transform.position.x, yMinLimit, this.transform.position.z);
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Michsky.MUIP;
 using UnityEngine.SceneManagement;
+using MoreMountains.Feedbacks;
 
 public class LevelManager : MonoBehaviour
 {
@@ -21,35 +22,32 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private  ModalWindowManager _modalWindowManager;
     [SerializeField]
+    private MMF_Player soundPlayer;
+
     private static int _activeCount = 0;
 
     private List<GameObject> _activeIcons;
     private List<GameObject> _inactiveIcons;
     private int _maxActiveCount = 10;
     private int _maxInactiveCount = 10;
-    private int _defaultActiveCount = 3;
+    private int _defaultActiveCount = 4;
     private bool isBlinking;
     private int _currentDialogIndex = -1;
     private bool _completedInfection = false;
     public static LevelManager Instance { get; private set; }
 
-
-    private void Awake()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
+        _dialogCanvas.gameObject.SetActive(false);
+        if (soundPlayer != null)
+        {
+            soundPlayer.PlayFeedbacks();
+        }
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {   
         _activeIcons = new List<GameObject>();
         _inactiveIcons = _icons.ToList();
         isBlinking = false;

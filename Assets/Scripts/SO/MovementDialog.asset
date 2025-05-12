@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a4da78e54f6834ca4964ecda949568, type: 3}
   m_Name: MovementDialog
   m_EditorClassIdentifier: 
-  DialogText: You can move using w,a,s,d and fire cleansing bullet using left mouse
-    button.
+  DialogText: Cursor control has been secured. Use W, A, S, D to navigate, aim with
+    your mouse, and fire cleansing bullets using the left mouse button. Your bullets
+    can also intercept and destroy incoming enemy projectiles.
   Title: MR Antivirus

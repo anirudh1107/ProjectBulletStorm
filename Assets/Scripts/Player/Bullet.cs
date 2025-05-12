@@ -43,9 +43,6 @@ public class Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            // Handle collision with enemy
-            // For example, you can apply damage to the enemy here
-            Debug.Log("Hit Enemy");
             collision.gameObject.GetComponent<Enemy>().Hit?.Invoke();
         }
         ReturnBullet();
@@ -55,7 +52,7 @@ public class Bullet : MonoBehaviour
     {      
         rb.linearVelocity = Vector2.zero;
         Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
-        PlayerGun.bulletPool.ReturnPlayerBullet(this.gameObject);
+        PlayerGun.Instance.bulletPool.ReturnPlayerBullet(this.gameObject);
     }
 
 

@@ -88,7 +88,14 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
-        LevelManager.DisInfect();
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.DisInfect();
+        }
+        else if (Level2Manager.Instance != null)
+        {
+            Level2Manager.DisInfect();
+        }
         _infectedVisuals.SetActive(false);
         _collider.enabled = false;
         _isInfected = false;
@@ -130,7 +137,7 @@ public class Enemy : MonoBehaviour
     private IEnumerator ShootEnumerator()
     {
         _routineShakeFeedBack.PlayFeedbacks();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         _enemyGun.ShootCircularPattern(40, this.transform.position);
     }
 

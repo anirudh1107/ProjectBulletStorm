@@ -2,12 +2,15 @@ using UnityEngine;
 using Michsky.MUIP;
 using System;
 using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 public class PlayerHealth : MonoBehaviour
 {
 
     [SerializeField]
     private SliderManager _healthBar;
+    [SerializeField]
+    private MMF_Player _hitFeedback;
 
     private float _currentHealth;
     private float _maxHealth = 100f;
@@ -45,6 +48,7 @@ public class PlayerHealth : MonoBehaviour
     public void HitPlayer()
     {
         _currentHealth -= _defaultHitDamage;
+        _hitFeedback.PlayFeedbacks();
         UpdateHealthUI();
     }
 
@@ -53,8 +57,16 @@ public class PlayerHealth : MonoBehaviour
         _healthSlider.value = _currentHealth;
         if (_currentHealth <= 0)
         {
-            // Handle player death
-            LevelManager.Instance.GameOverDialog();
+            if (LevelManager.Instance != null)
+            {
+                // Handle player death
+                LevelManager.Instance.GameOverDialog();
+            }
+            else if (Level2Manager.Instance != null)
+            {
+                // Handle player death
+                Level2Manager.Instance.GameOverDialog();
+            }
         }
     }
 }
